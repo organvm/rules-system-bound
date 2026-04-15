@@ -1,44 +1,3 @@
-# rules-system-bound
-
-A generalized system for organizing hierarchically nested containers where the hierarchy emerges from the contained systems themselves, not predetermined levels.
-
-## Core Concept
-
-The Living Container Framework provides rules for containment, interaction, and idealized form reflection/refraction. The hierarchy emerges from what's contained, not from predetermined structures.
-
-## Key Principles
-
-- **Containment**: Multi-factor (function + scale + boundary), context-dependent precedence
-- **Primitives**: Unspecified - each instantiation defines its own smallest unit
-- **Top boundary**: Self-defining
-- **Idealized forms**: Co-constitutive with real systems
-- **Interactions**: Emergent from specific system relations
-
-## Development
-
-```bash
-# Setup
-python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"
-
-# Run tests
-pytest tests -v
-
-# Lint
-ruff check src tests
-```
-
-## Structure
-
-```
-src/rules_system_bound/
-├── container.py      # Core container model
-├── containment.py    # Containment rules
-├── idealization.py  # Idealized forms
-├── interaction.py   # Interaction emergence
-└── config.py        # Environment config
-```
-
 <!-- ORGANVM:AUTO:START -->
 ## System Context (auto-generated — do not edit)
 
@@ -154,7 +113,7 @@ Library: `meta-organvm/praxis-perpetua/library/`
 Linked skills: api-design-patterns, cicd-resilience-and-recovery, coding-standards-enforcer, continuous-learning-agent, contract-risk-analyzer, cross-agent-handoff, evaluation-to-growth, gdpr-compliance-check, genesis-dna, multi-agent-workforce-planner, planning-and-roadmapping, promotion-and-state-transitions, quality-gate-baseline-calibration, repo-onboarding-and-habitat-creation, security-threat-modeler, structural-integrity-audit
 
 
-**Prompting (Anthropic)**: context 200K tokens, format: XML tags, thinking: extended thinking (budget_tokens)
+**Prompting (Google)**: context 1M tokens (Gemini 1.5 Pro), format: markdown, thinking: thinking mode (thinkingConfig)
 
 
 ## Live System Variables (Ontologia)
