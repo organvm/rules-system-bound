@@ -1,5 +1,11 @@
 """Tests for rules-system-bound."""
 
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
 from rules_system_bound import (
     Container,
     ContainmentRules,
@@ -10,6 +16,10 @@ from rules_system_bound import (
     InteractionEmergence,
     Config,
 )
+from rules_system_bound.cli import build_activation_report, main
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 class TestContainer:
@@ -199,3 +209,47 @@ class TestConfig:
 
         assert config.container_function == "custom_func"
         assert config.domain_family == "social"
+
+
+class TestActivationCli:
+    """Tests for the executable activation surface."""
+
+    def test_activation_report_passes(self):
+        """Activation report proves containment and interaction paths."""
+        report = build_activation_report()
+
+        assert report["status"] == "ok"
+        assert report["checks"]["containment"] is True
+        assert report["checks"]["interaction_count"] > 0
+
+    def test_cli_outputs_json(self, capsys):
+        """CLI can emit machine-readable activation evidence."""
+        exit_code = main(["--json"])
+        output = capsys.readouterr().out
+        report = json.loads(output)
+
+        assert exit_code == 0
+        assert report["package"] == "rules-system-bound"
+        assert report["status"] == "ok"
+
+    def test_module_entrypoint_outputs_json(self):
+        """Module entrypoint works from a source checkout."""
+        env = os.environ.copy()
+        src_path = str(REPO_ROOT / "src")
+        env["PYTHONPATH"] = (
+            src_path
+            if not env.get("PYTHONPATH")
+            else f"{src_path}{os.pathsep}{env['PYTHONPATH']}"
+        )
+
+        result = subprocess.run(
+            [sys.executable, "-m", "rules_system_bound", "--json"],
+            cwd=REPO_ROOT,
+            env=env,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        report = json.loads(result.stdout)
+
+        assert report["status"] == "ok"
