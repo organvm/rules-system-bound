@@ -16,8 +16,12 @@ The Living Container Framework provides rules for:
 ```bash
 git clone https://github.com/organvm-i-theoria/rules-system-bound.git
 cd rules-system-bound
-pip install -e ".[dev]"
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -e ".[dev]"
 ```
+
+This installs the `rules-system-bound` console command.
 
 ## Quick Start
 
@@ -44,6 +48,24 @@ emergence.register_system(s2)
 
 interactions = emergence.discover_interactions(s1, s2)
 ```
+
+## Activation Check
+
+Run the repository smoke check from an uninstalled checkout:
+
+```bash
+PYTHONPATH=src python3 -m rules_system_bound --json
+```
+
+Or run the installed console command:
+
+```bash
+rules-system-bound --json
+```
+
+The command returns `status: ok` when the containment and interaction paths are
+runnable. See [docs/activation.md](docs/activation.md) for the activation audit
+evidence for `organvm-i-theoria/rules-system-bound#2`.
 
 ## Core Concepts
 
