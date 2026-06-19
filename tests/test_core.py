@@ -199,3 +199,13 @@ class TestConfig:
 
         assert config.container_function == "custom_func"
         assert config.domain_family == "social"
+
+    def test_config_from_env_preserves_types(self, monkeypatch):
+        """Environment values are coerced into config field types."""
+        monkeypatch.setenv("CONTAINMENT_FUNCTION_WEIGHT", "0.7")
+        monkeypatch.setenv("LEVEL_NAMES_EMERGE", "false")
+
+        config = Config.from_env()
+
+        assert config.containment_function_weight == 0.7
+        assert config.level_names_emerge is False
