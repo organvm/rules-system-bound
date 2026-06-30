@@ -97,7 +97,7 @@ class ContainmentRules:
 
         All three factors must pass (AND logic).
         """
-        func_compat = self._check_function_compatibility(container, contained)
+        func_compat = self._check_function_compatibility(container, contained) > 0.0
         scale_compat = self._check_scale_relation(container, contained)
         boundary_perm = self._check_boundary_permeability(container, contained)
 
@@ -105,10 +105,21 @@ class ContainmentRules:
 
     def _check_function_compatibility(
         self, container: Container, contained: Container
-    ) -> bool:
-        """Check if functions are compatible."""
-        # Placeholder - actual logic depends on domain
-        return True
+    ) -> float:
+        """Check if functions are compatible using Jaccard similarity over tokens."""
+        c_tokens = set(container.function.lower().split())
+        cont_tokens = set(contained.function.lower().split())
+
+        if not c_tokens and not cont_tokens:
+            return 1.0
+
+        intersection = c_tokens.intersection(cont_tokens)
+        union = c_tokens.union(cont_tokens)
+
+        if not union:
+            return 0.0
+
+        return len(intersection) / len(union)
 
     def _check_scale_relation(self, container: Container, contained: Container) -> bool:
         """Check if scale relationship allows containment."""
@@ -133,9 +144,7 @@ class ContainmentRules:
         self, container: Container, contained: Container
     ) -> float:
         """Compute a score for containment compatibility (0-1)."""
-        func_score = (
-            1.0 if self._check_function_compatibility(container, contained) else 0.0
-        )
+        func_score = self._check_function_compatibility(container, contained)
         scale_score = 1.0 if self._check_scale_relation(container, contained) else 0.0
         boundary_score = (
             1.0 if self._check_boundary_permeability(container, contained) else 0.0
