@@ -17,7 +17,7 @@ def activation_report() -> dict[str, Any]:
     """Build a deterministic report that exercises the public API."""
     root = Container(
         id="framework",
-        function="containment",
+        function="containment process",
         purpose="organize bounded systems",
         boundary="porous",
         properties={"scale_range": (0, 100)},
